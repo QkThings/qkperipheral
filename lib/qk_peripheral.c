@@ -12,7 +12,7 @@ void qk_peripheral_setup()
 #endif
 }
 
-void qk_peripheral_update_(int clk_freq)
+void qk_peripheral_update(int clk_freq)
 {
 	_qk_peripheral.clk_freq = clk_freq;
 #ifdef HAS_ADC
