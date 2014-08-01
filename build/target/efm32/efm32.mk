@@ -2,11 +2,6 @@
 # qkthings
 ###############################################################################
 
-include $(TARGET_GLOBAL)
-
-HWSPECS += \
-HAS_GPIO \
-HAS_ADC
 
 ###############################################################################
 # FILES and DIRS
@@ -25,5 +20,6 @@ $(ENERGYMICRO)/emlib/src/em_cmu.c \
 $(ENERGYMICRO)/emlib/src/em_emu.c \
 $(ENERGYMICRO)/emlib/src/em_timer.c \
 $(ENERGYMICRO)/emlib/src/em_gpio.c \
-$(ENERGYMICRO)/emlib/src/em_usart.c
+$(ENERGYMICRO)/emlib/src/em_usart.c \
+$(ENERGYMICRO)/emlib/src/em_leuart.c
 

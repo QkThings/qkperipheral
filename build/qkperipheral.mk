@@ -4,7 +4,7 @@
 
 
 ####################################################################
-# DIRS AND FLAGS                     
+# SOURCE                   
 ####################################################################
 
 QKPERIPHERAL_DIR = qkperipheral
@@ -19,12 +19,10 @@ $(QKPERIPHERAL_DIR)/lib
 s_SRC += 
 S_SRC += 
 
+####################################################################
+# TARGET
+####################################################################
+
+include $(TARGET_GLOBAL)
+include $(QKPERIPHERAL_DIR)/build/target/$(TARGET_NAME)/$(TARGET_NAME)_hw.mk
 include $(QKPERIPHERAL_DIR)/build/target/$(TARGET_NAME)/$(TARGET_NAME).mk
-
-ifeq ($(HWSPECS),)
-  $(warning HWSPECS not defined!)
-endif
-
-HWSPECS_DEFINES = $(addprefix -D, $(HWSPECS))
-CFLAGS += $(HWSPECS_DEFINES) 
-

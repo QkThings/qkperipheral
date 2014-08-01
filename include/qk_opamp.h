@@ -1,7 +1,7 @@
 #ifndef QK_OPAMP_H
 #define QK_OPAMP_H
 
-typed uint32_t qk_opamp;
+typedef uint32_t qk_opamp;
 
 typedef enum qk_opamp_config
 {
