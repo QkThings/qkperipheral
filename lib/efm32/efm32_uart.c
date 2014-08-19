@@ -143,12 +143,13 @@ void _qk_uart_startup()
 
 void qk_uart_set_baudrate(qk_uart uart, uint32_t baud)
 {
-	if(get_uart_type(uart) == UART_TYPE_USART)
+	UART_Type uartType = get_uart_type(uart);
+	if(uartType == UART_TYPE_USART)
 	{
 		USART_TypeDef *usart = get_usart_typedef(uart);
 		USART_BaudrateAsyncSet(usart, 0, baud, USART_OVS_MASK);
 	}
-	else
+	else if(uartType == UART_TYPE_LEUART)
 	{
 		LEUART_TypeDef *leuart = get_leuart_typedef(uart);
 		LEUART_BaudrateSet(leuart, 0, baud);
@@ -190,7 +191,7 @@ uint16_t qk_uart_bytes_available(qk_uart uart)
 {
 	return _qk_uart[uart].count;
 }
-uint16_t qk_uart_read_bytes(qk_uart uart, uint8_t *buf, uint16_t count)
+uint16_t qk_uart_read(qk_uart uart, uint8_t *buf, uint16_t count)
 {
 	int i;
 	uint8_t bytes_to_read = count;

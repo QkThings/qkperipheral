@@ -1,6 +1,14 @@
 #ifndef QK_TIMER_H
 #define QK_TIMER_H
 
+/** \addtogroup QkTimer
+ * @brief Timers
+ *  @{
+ */
+
+/**
+ * Timer ID
+ */
 typedef enum qk_timer
 {
 	QK_TIMER_0,
@@ -11,20 +19,48 @@ typedef enum qk_timer
 	QK_TIMER_5,
 } qk_timer;
 
+
+/**
+ * Timer Scale
+ */
 typedef enum qk_timer_scale
 {
-	QK_TIMER_SCALE_USEC,
-	QK_TIMER_SCALE_MSEC,
-	QK_TIMER_SCALE_SEC
+	QK_TIMER_SCALE_USEC,//!< QK_TIMER_SCALE_USEC
+	QK_TIMER_SCALE_MSEC,//!< QK_TIMER_SCALE_MSEC
+	QK_TIMER_SCALE_SEC //!< QK_TIMER_SCALE_SEC
 } qk_timer_scale;
 
-
+/**
+ * @brief .
+ */
 int qk_timer_set_period(qk_timer timer, qk_timer_scale scale, unsigned int value);
+
+/**
+ * @brief .
+ */
 int qk_timer_get_value(qk_timer timer);
+
+/**
+ * @brief .
+ */
 void qk_timer_start(qk_timer timer);
+
+/**
+ * @brief .
+ */
 void qk_timer_stop(qk_timer timer);
+
+/**
+ * @brief .
+ */
 void qk_timer_restart(qk_timer timer);
+
+/**
+ * @brief .
+ */
 void qk_timer_set_interrupt(qk_timer timer, qk_timer_interrupt isr, void (*cb)(void));
+
+/** @}*/
 
 #endif
 
