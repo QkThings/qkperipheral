@@ -16,22 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "qk_peripheral.h"
+#include "qk_peripheral_p.h"
+
 qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
 
-void qk_peripheral_setup()
+void _qk_peripheral_setup(void)
 {
-#ifdef QK_GPIO
+	_qk_mcu_init();
+	_qk_gpio_init();
+	_qk_uart_init();
+	_qk_timer_init();
+
+	_qk_clock_startup();
 	_qk_gpio_startup();
-#endif
-#ifdef QK_ADC
-	_qk_adc_startup();
-#endif
-#ifdef QK_UART
 	_qk_uart_startup();
-#endif
+	_qk_timer_startup();
 }
 
-void qk_peripheral_update(int clk_freq)
+void _qk_peripheral_update(int clk_freq)
 {
 	_qk_peripheral.clk_freq = clk_freq;
 }

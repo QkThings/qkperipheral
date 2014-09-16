@@ -16,7 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-void qk_adc_hw_startup()
-{
 
+#include "qk_peripheral.h"
+#include "qk_peripheral_p.h"
+
+#include "em_adc.h"
+
+int qk_adc_read(qk_adc_ch ch)
+{
+	return 0;
 }

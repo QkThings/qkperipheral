@@ -17,6 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#ifndef QK_PERIPHERAL_P_H
+#define QK_PERIPHERAL_P_H
+
+// Development --------------------------------------------------------
+//#define _QK_PERIPHERAL_DEV_UART_LOOPBACK
+// --------------------------------------------------------------------
+
+#include <string.h>
+#include "qk_mcu_p.h"
+#include "qk_clock_p.h"
+#include "qk_gpio_p.h"
+#include "qk_uart_p.h"
+#include "qk_timer_p.h"
+#include "qk_adc_p.h"
+
 #ifndef INIT_CLKFREQ
 #error "INIT_CLKFREQ is not defined"
 #endif

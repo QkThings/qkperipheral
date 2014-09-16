@@ -22,11 +22,16 @@
  *  @{
  */
 
+#ifndef QK_TIMER_H
+#define QK_TIMER_H
+
 /**
  * Timer ID
  */
-typedef enum qk_timer
+typedef enum
 {
+	_QK_PROGRAM_TIMER0,
+	_QK_PROGRAM_TIMER1,
 	QK_TIMER_0,
 	QK_TIMER_1,
 	QK_TIMER_2,
@@ -39,44 +44,55 @@ typedef enum qk_timer
 /**
  * Timer Scale
  */
-typedef enum qk_timer_scale
+typedef enum
 {
 	QK_TIMER_SCALE_USEC,//!< QK_TIMER_SCALE_USEC
 	QK_TIMER_SCALE_MSEC,//!< QK_TIMER_SCALE_MSEC
 	QK_TIMER_SCALE_SEC //!< QK_TIMER_SCALE_SEC
 } qk_timer_scale;
 
-/**
- * @brief .
- */
-int qk_timer_set_period(qk_timer timer, qk_timer_scale scale, unsigned int value);
+typedef enum
+{
+	QK_TIMER_FLAG_TIMEOUT = (1<<0),
+	QK_TIMER_FLAG_OVERLAP = (1<<1)
+} qk_timer_flag;
 
 /**
  * @brief .
  */
-int qk_timer_get_value(qk_timer timer);
+int qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale);
 
 /**
  * @brief .
  */
-void qk_timer_start(qk_timer timer);
+int qk_timer_set_frequency(qk_timer id, unsigned int value);
+
 
 /**
  * @brief .
  */
-void qk_timer_stop(qk_timer timer);
+void qk_timer_start(qk_timer id);
 
 /**
  * @brief .
  */
-void qk_timer_restart(qk_timer timer);
+void qk_timer_stop(qk_timer id);
 
 /**
  * @brief .
  */
-void qk_timer_set_interrupt(qk_timer timer, qk_timer_interrupt isr, void (*cb)(void));
+void qk_timer_restart(qk_timer id);
+
+
+uint32_t qk_timer_flags(qk_timer id);
+void qk_timer_flags_clear(qk_timer id, uint32_t flags);
+
+
+void delay_us(uint16_t value);
+void delay_ms(uint16_t value);
+void delay_s(uint16_t value);
+
+#endif // QK_TIMER_H
 
 /** @}*/
-
-#endif
 

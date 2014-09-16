@@ -72,3 +72,5 @@ void qk_spi_set_bitmode(qk_spi spi, qk_spi_bitmode bitmode);
 void qk_spi_set_speed(qk_spi spi, qk_spi_speed speed);
 
 #endif
+
+/** @}*/

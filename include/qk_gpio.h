@@ -23,6 +23,8 @@
  *  @{
  */
 
+#ifndef QK_GPIO_H
+#define QK_GPIO_H
 
 /**
  * GPIO Port
@@ -58,15 +60,15 @@ typedef enum
 	QK_GPIO_MODE_INPUT_PULL_DOWN //!< QK_GPIO_MODE_INPUT_PULL_DOWN
 } qk_gpio_mode;
 
-/**
- * GPIO Interrupt ID
- */
+
 typedef enum
 {
-	QK_GPIO_INTERRUPT_FALL, //!< QK_GPIO_INTERRUPT_FALL
-	QK_GPIO_INTERRUPT_RISE, //!< QK_GPIO_INTERRUPT_RISE
-	QK_GPIO_INTERRUPT_TOGGLE //!< QK_GPIO_INTERRUPT_TOGGLE
-} qk_gpio_interrupt;
+	QK_GPIO_FLAG_FALL = (1<<0),
+	QK_GPIO_FLAG_RISE = (1<<1)
+} qk_gpio_flag;
+
+
+#define QK_GPIO_CREATE(port,pin) (((port)<<16)+((pin)&0xFFFF))
 
 /**
  * @brief .
@@ -101,22 +103,17 @@ void qk_gpio_toggle_pin(qk_gpio_pin pin);
 /**
  * @brief .
  */
-void qk_gpio_toggle_port(qk_gpio_port port);
+void qk_gpio_toggle_port(qk_gpio_port port, int pins);
 
 /**
  * @brief .
  */
-void qk_gpio_enable_interrupt();
+void qk_gpio_interrupt_set(qk_gpio_pin pin, uint32_t flags);
 
-/**
- * @brief .
- */
-void qk_gpio_disable_interrupt();
 
-/**
- * @brief .
- */
-void qk_gpio_set_interrupt(qk_gpio_pin pin, qk_gpio_interrupt id, void (*cb)(void));
+
+uint32_t qk_gpio_flags();
+void qk_gpio_flags_clear();
 
 /** @}*/
 

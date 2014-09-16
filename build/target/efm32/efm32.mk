@@ -21,4 +21,5 @@ $(ENERGYMICRO)/emlib/src/em_emu.c \
 $(ENERGYMICRO)/emlib/src/em_timer.c \
 $(ENERGYMICRO)/emlib/src/em_gpio.c \
 $(ENERGYMICRO)/emlib/src/em_usart.c \
-$(ENERGYMICRO)/emlib/src/em_leuart.c
+$(ENERGYMICRO)/emlib/src/em_leuart.c \
+$(ENERGYMICRO)/emlib/src/em_int.c

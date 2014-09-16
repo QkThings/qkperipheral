@@ -2,40 +2,41 @@
  * QkThings LICENSE
  * The open source framework and modular platform for smart devices.
  * Copyright (C) 2014 <http://qkthings.com>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** \addtogroup QkDAC
- * @brief Digital-to-Analog Converter (DAC)
- *  @{
- */
+#include "qk_peripheral.h"
+#include "qk_peripheral_p.h"
 
-#ifndef QK_DAC_H
-#define QK_DAC_H
+_qk_gpio_struct _qk_gpio;
 
-typed uint32_t qk_dac;
-
-typedef struct qk_dac_ch
+void _qk_gpio_init()
 {
-	qk_dac   dac;
-	uint32_t ch;
-} qk_dac_ch;
+	memset(&_qk_gpio, 0, sizeof(_qk_gpio_struct));
+}
 
-void qk_dac_set_value(qk_dac_ch ch, uint32_t value);
-uint32_t qk_dac_get_value(qk_dac_ch ch);
+void _qk_gpio_handle_input_changed(uint32_t flags)
+{
+	_qk_gpio.flags |= flags;
+}
 
-#endif
-
-/** @}*/
+uint32_t qk_gpio_flags()
+{
+	return _qk_gpio.flags;
+}
+void qk_gpio_flags_clear()
+{
+	_qk_gpio.flags = 0;
+}
