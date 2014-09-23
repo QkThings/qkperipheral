@@ -17,7 +17,7 @@ def deploy():
 	chdir(path.join(rootdir,"doc"))
 	if path.exists("html"):
 		shutil.rmtree("html")
-	call(["/usr/local/bin/doxygen"])
+	call(["doxygen"])
 #	cp(".", "html", "css")
 	cp(".", "html", "fonts")
 

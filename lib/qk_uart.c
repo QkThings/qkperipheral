@@ -24,7 +24,7 @@ _qk_uart_struct _qk_uart[QK_UART_COUNT];
 
 void _qk_uart_init(void)
 {
-	memset(_qk_uart, 0, QK_UART_COUNT*sizeof(_qk_uart_struct));
+	memset((void*) _qk_uart, 0, QK_UART_COUNT*sizeof(_qk_uart_struct));
 }
 
 uint16_t qk_uart_bytes_available(qk_uart id)
@@ -34,7 +34,7 @@ uint16_t qk_uart_bytes_available(qk_uart id)
 
 int qk_uart_peek(qk_uart id, uint8_t *buf, int count)
 {
-	int i;
+	unsigned int i;
 	uint16_t bytes_to_read = count;
 
 	qk_mcu_interrupt_disable();
@@ -58,7 +58,7 @@ int qk_uart_peek(qk_uart id, uint8_t *buf, int count)
 
 uint16_t qk_uart_read(qk_uart id, uint8_t *buf, uint16_t count)
 {
-	int i;
+	unsigned int i;
 	uint16_t bytes_to_read = count;
 
 	qk_mcu_interrupt_disable();

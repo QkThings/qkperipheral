@@ -75,7 +75,7 @@ void qk_gpio_set_mode(qk_gpio_pin pin, qk_gpio_mode mode)
 	}
 
 	GPIO_PinModeSet((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-			        (unsigned int) _QK_GPIO_PIN(pin),
+			        (unsigned int) _QK_GPIO_BIT(pin),
 			        efm32_mode,
 			        out);
 
@@ -87,19 +87,19 @@ void qk_gpio_set_pin(qk_gpio_pin pin, bool state)
 	if(state)
 	{
 		GPIO_PinOutSet((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-				       (unsigned int) _QK_GPIO_PIN(pin));
+				       (unsigned int) _QK_GPIO_BIT(pin));
 	}
 	else
 	{
 		GPIO_PinOutClear((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-				         (unsigned int) _QK_GPIO_PIN(pin));
+				         (unsigned int) _QK_GPIO_BIT(pin));
 	}
 }
 
 bool qk_gpio_get_pin(qk_gpio_pin pin)
 {
 	return GPIO_PinInGet((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-	                      (unsigned int) _QK_GPIO_PIN(pin));
+	                      (unsigned int) _QK_GPIO_BIT(pin));
 }
 
 
@@ -118,7 +118,7 @@ int  qk_gpio_get_port(qk_gpio_port port)
 void qk_gpio_toggle_pin(qk_gpio_pin pin)
 {
 	GPIO_PinOutToggle((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-	                  (unsigned int) _QK_GPIO_PIN(pin));
+	                  (unsigned int) _QK_GPIO_BIT(pin));
 }
 
 
@@ -136,7 +136,7 @@ void qk_gpio_interrupt_set(qk_gpio_pin pin, uint32_t flags)
 		risingEdge = true;
 
 	GPIO_IntConfig((GPIO_Port_TypeDef) _QK_GPIO_PORT(pin),
-			       (unsigned int) _QK_GPIO_PIN(pin),
+			       (unsigned int) _QK_GPIO_BIT(pin),
 	               risingEdge,
 	               fallingEdge,
 	               true);

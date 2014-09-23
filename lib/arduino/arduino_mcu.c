@@ -20,13 +20,24 @@
 #include "qk_peripheral.h"
 #include "qk_peripheral_p.h"
 
-#include "em_cmu.h"
+#include <avr/interrupt.h>
 
-void _qk_clock_startup(void)
+void _qk_mcu_startup(void)
 {
-//	CMU_ClockEnable(cmuClock_HFPER, true);
-//	CMU_ClockEnable(cmuClock_CORELE, true);
-//
-//	CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_CORELEDIV2);
-//	CMU->LFBPRESC0 = CMU_LFBPRESC0_LEUART0_DIV2;
+
+}
+
+void _qk_mcu_finalize(void)
+{
+	sei();
+}
+
+void qk_mcu_interrupt_enable(void)
+{
+	sei();
+}
+
+void qk_mcu_interrupt_disable(void)
+{
+	cli();
 }

@@ -107,7 +107,7 @@ typedef enum TIMER_Type
 
 EFM32_TIMER_IRQ(TIMER0, 	_QK_PROGRAM_TIMER0)
 EFM32_TIMER_IRQ(TIMER1, 	_QK_PROGRAM_TIMER1)
-EFM32_LETIMER_IRQ(LETIMER0, QK_TIMER_0)
+//EFM32_LETIMER_IRQ(LETIMER0, QK_TIMER_0)
 
 
 void _qk_timer_startup(void)
@@ -150,7 +150,7 @@ static TIMER_Type get_timer_type(qk_timer id)
 		return TIMER_TYPE_LETIMER;
 }
 
-int qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale)
+void qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale)
 {
 	if(get_timer_type(id) == TIMER_TYPE_TIMER)
 		timer_set_period(get_timer_typedef(id), value, scale);
@@ -158,7 +158,7 @@ int qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale)
 		letimer_set_period(get_letimer_typedef(id), value, scale);
 }
 
-int qk_timer_set_frequency(qk_timer id, unsigned int value)
+void qk_timer_set_frequency(qk_timer id, unsigned int value)
 {
 	if(get_timer_type(id) == TIMER_TYPE_TIMER)
 		timer_set_frequency(get_timer_typedef(id), value);
@@ -186,7 +186,10 @@ void qk_timer_stop(qk_timer id)
 void qk_timer_restart(qk_timer id)
 {
 	if(get_timer_type(id) == TIMER_TYPE_TIMER)
+	{
 		get_timer_typedef(id)->CNT = 0;
+		get_timer_typedef(id)->CMD = TIMER_CMD_START;
+	}
 	else
 		get_letimer_typedef(id)->CNT = get_letimer_typedef(id)->COMP0;
 }
@@ -235,7 +238,7 @@ static void timer_set_period(TIMER_TypeDef *timer, uint32_t per, qk_timer_scale 
 		break;
 	case QK_TIMER_SCALE_USEC:
 		timer->CTRL = (timer->CTRL & ~_TIMER_CTRL_PRESC_MASK) | _1us_pre_mask[0];
-		timer->TOP = calc_top(per, _1us_scaler[0], 0);;
+		timer->TOP = calc_top(per, _1us_scaler[0], 0);
 		break;
 	default: ;
 	}

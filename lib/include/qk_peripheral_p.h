@@ -27,7 +27,6 @@
 
 #include <string.h>
 #include "qk_mcu_p.h"
-#include "qk_clock_p.h"
 #include "qk_gpio_p.h"
 #include "qk_uart_p.h"
 #include "qk_timer_p.h"
@@ -39,7 +38,7 @@
 
 typedef struct qk_peripheral
 {
-	int clk_freq;
+	long int clk_freq;
 } qk_peripheral;
 
 #define QKPERIPHERAL_INIT { .clk_freq = INIT_CLKFREQ }

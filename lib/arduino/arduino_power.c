@@ -17,9 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QK_CLOCK_P_H
-#define QK_CLOCK_P_H
+#include "qk_peripheral.h"
+#include "qk_peripheral_p.h"
 
-void _qk_clock_startup(void);
+#include <avr/sleep.h>
+#include <avr/interrupt.h>
 
-#endif
+static void goto_sleep()
+{
+  sleep_enable();
+  sei();
+  sleep_cpu();
+  sleep_disable();
+}
+
+void qk_power_EM1()
+{
+	set_sleep_mode(SLEEP_MODE_IDLE);
+	goto_sleep();
+}
+
+void qk_power_EM2()
+{
+	qk_power_EM1();
+}
+
+void qk_power_EM3()
+{
+	qk_power_EM1();
+}

@@ -27,7 +27,7 @@ typedef struct
 
 
 #define _QK_GPIO_PORT(pin)	((pin >> 16) & 0xFFFF)
-#define _QK_GPIO_PIN(pin)	(pin & 0xFFFF)
+#define _QK_GPIO_BIT(pin)	(pin & 0xFFFF)
 
 extern _qk_gpio_struct _qk_gpio;
 

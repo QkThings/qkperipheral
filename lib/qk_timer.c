@@ -36,12 +36,17 @@ void _qk_timer_handle_interrupt(qk_timer id)
 
 uint32_t qk_timer_flags(qk_timer id)
 {
-	return _qk_timer[id].flags;
+	qk_mcu_interrupt_disable();
+	uint32_t flags = _qk_timer[id].flags;
+	qk_mcu_interrupt_enable();
+	return flags;
 }
 
 void qk_timer_flags_clear(qk_timer id, uint32_t flags)
 {
+	qk_mcu_interrupt_disable();
 	_qk_timer[id].flags &= ~flags;
+	qk_mcu_interrupt_enable();
 }
 
 

@@ -60,12 +60,12 @@ typedef enum
 /**
  * @brief .
  */
-int qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale);
+void qk_timer_set_period(qk_timer id, unsigned int value, qk_timer_scale scale);
 
 /**
  * @brief .
  */
-int qk_timer_set_frequency(qk_timer id, unsigned int value);
+void qk_timer_set_frequency(qk_timer id, unsigned int value);
 
 
 /**

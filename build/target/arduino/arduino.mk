@@ -2,15 +2,15 @@
 # qkthings
 ###############################################################################
 
-include $(TARGET_GLOBAL)
 
 ###############################################################################
 # SOURCE
 ###############################################################################
 INCLUDE_DIR += \
-$(QKPROGRAM_DIR)/lib/hal/arduino
+$(QKPERIPHERAL_DIR)/lib/arduino
 
 C_SRC_DIR += \
-$(QKPROGRAM_DIR)/lib/hal/arduino
+$(QKPERIPHERAL_DIR)/lib/arduino
+
 
 

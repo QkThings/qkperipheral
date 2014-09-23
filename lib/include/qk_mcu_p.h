@@ -20,6 +20,7 @@
 #ifndef QK_MCU_P_H
 #define QK_MCU_P_H
 
-void _qk_mcu_init(void);
+void _qk_mcu_startup(void);
+void _qk_mcu_finalize(void);
 
 #endif

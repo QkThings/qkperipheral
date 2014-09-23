@@ -35,7 +35,6 @@ Configuring microcontroller's peripherals through registers is always a time con
 #include <stdbool.h>
 
 #include "qk_mcu.h"
-#include "qk_clock.h"
 #include "qk_power.h"
 #include "qk_gpio.h"
 #include "qk_uart.h"

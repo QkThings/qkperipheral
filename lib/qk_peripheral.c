@@ -24,15 +24,16 @@ qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
 
 void _qk_peripheral_setup(void)
 {
-	_qk_mcu_init();
+	_qk_mcu_startup();
+	_qk_gpio_startup();
+	_qk_uart_startup();
+	_qk_timer_startup();
+
 	_qk_gpio_init();
 	_qk_uart_init();
 	_qk_timer_init();
 
-	_qk_clock_startup();
-	_qk_gpio_startup();
-	_qk_uart_startup();
-	_qk_timer_startup();
+	_qk_mcu_finalize();
 }
 
 void _qk_peripheral_update(int clk_freq)

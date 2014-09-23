@@ -21,11 +21,13 @@
 #include "qk_peripheral_p.h"
 
 #include "em_chip.h"
+#include "em_cmu.h"
 #include "em_int.h"
 
-void _qk_mcu_init(void)
+void _qk_mcu_startup(void)
 {
 	CHIP_Init();
+	CMU_ClockEnable(cmuClock_HFPER, true);
 }
 
 void qk_mcu_interrupt_enable(void)
