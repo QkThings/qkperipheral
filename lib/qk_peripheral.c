@@ -28,6 +28,7 @@ void _qk_peripheral_setup(void)
 	_qk_gpio_startup();
 	_qk_uart_startup();
 	_qk_timer_startup();
+	_qk_adc_startup();
 
 	_qk_gpio_init();
 	_qk_uart_init();
