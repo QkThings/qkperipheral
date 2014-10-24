@@ -32,6 +32,32 @@ typedef uint32_t qk_adc_ch;
  */
 int qk_adc_read(qk_adc_ch ch);
 
+/**
+ * @brief .
+ */
+uint8_t qk_adc_flags();
+
+/**
+ * @brief .
+ */
+uint8_t qk_adc_flag(uint8_t flag);
+
+
+/**
+ * @brief .
+ */
+void qk_adc_flags_clear();
+
+/**
+ * @brief .
+ */
+void qk_adc_flag_clear(uint8_t flag);
+
+/**
+ * @brief .
+ */
+void qk_adc_flag_set(uint8_t flag);
+
 #endif
 
 /** @}*/

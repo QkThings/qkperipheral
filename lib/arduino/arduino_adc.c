@@ -25,8 +25,12 @@
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 
-// ADC Interrupt is only used to wake up CPU from Sleep Mode
-EMPTY_INTERRUPT (ADC_vect);
+// ADC Interrupt Routine
+ISR(ADC_vect)
+{
+	qk_adc_flag_set(_QK_ADC_IF);
+}
+
 
 void _qk_adc_startup()
 {
@@ -46,17 +50,36 @@ void _qk_adc_startup()
 
 int qk_adc_read(qk_adc_ch ch)
 {
+	uint8_t done = 0;
+
 	// Select ADC channel
 	ADMUX = (ADMUX & 0xF0) | (ch & 0x07);
 	// Set Sleep Mode to ADC Noise Reduction
 	set_sleep_mode (SLEEP_MODE_ADC);
 	// Enable Sleep Mode
 	sleep_enable();
-   	// Enter Sleep Mode 
-    	sleep_cpu();
-	// After waking up, disable the Sleep Mode
+   	while(!done)
+	{
+		// Enter Sleep Mode 
+    		sleep_cpu();
+
+		//Check if the MCU woke up 
+		//due to the ADC interrupt
+		qk_mcu_interrupt_disable();
+
+		if( qk_adc_flag(_QK_ADC_IF) )
+		{
+			done  = 1; 
+			qk_adc_flag_clear(_QK_ADC_IF);
+		}
+
+		qk_mcu_interrupt_enable();
+        }
+	// After the procedure
+	// disable the Sleep Mode
 	sleep_disable();
-        // Return the ADC 10-bit word 
+        
+	// Return the ADC 10-bit word 
         return ADC;
 }
 
