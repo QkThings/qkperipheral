@@ -20,7 +20,22 @@
 #ifndef QK_ADC_P_H
 #define QK_ADC_P_H
 
+typedef struct
+{
+	uint8_t flags;
+} _qk_adc_struct;
+
+
+extern _qk_adc_struct _qk_adc;
+
 void _qk_adc_startup();
+void _qk_adc_init();
+
+void _qk_adc_setup(qk_adc_ch ch);
+void _qk_adc_start();
+uint8_t _qk_adc_done();
+uint16_t _qk_adc_read();
+
 
 #endif
 
