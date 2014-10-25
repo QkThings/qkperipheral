@@ -28,7 +28,7 @@
 // ADC Interrupt Routine
 ISR(ADC_vect)
 {
-	qk_adc_flag_set(_QK_ADC_IF);
+	qk_adc_flag_set(QK_ADC_FLAG_INTERRUPT);
 }
 
 
@@ -48,29 +48,32 @@ void _qk_adc_startup()
 	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
 }
 
-int qk_adc_read(qk_adc_ch ch)
+void _qk_adc_setup(qk_adc_ch ch)
 {
-	uint8_t done = 0;
-
 	// Select ADC channel
 	ADMUX = (ADMUX & 0xF0) | (ch & 0x07);
+}
+
+void _qk_adc_start()
+{
 	// Set Sleep Mode to ADC Noise Reduction
 	set_sleep_mode (SLEEP_MODE_ADC);
 	// Enable Sleep Mode
 	sleep_enable();
-   	while(!done)
+   	while( !(qk_adc_flags() & QK_ADC_FLAG_DONE) )
 	{
 		// Enter Sleep Mode 
     		sleep_cpu();
 
 		//Check if the MCU woke up 
 		//due to the ADC interrupt
-		qk_mcu_interrupt_disable();
 
-		if( qk_adc_flag(_QK_ADC_IF) )
+		qk_mcu_interrupt_disable();
+		
+		if( qk_adc_flags() & QK_ADC_FLAG_INTERRUPT )
 		{
-			done  = 1; 
-			qk_adc_flag_clear(_QK_ADC_IF);
+			qk_adc_flag_set(QK_ADC_FLAG_DONE); 
+			qk_adc_flag_clear(QK_ADC_FLAG_INTERRUPT);
 		}
 
 		qk_mcu_interrupt_enable();
@@ -78,8 +81,21 @@ int qk_adc_read(qk_adc_ch ch)
 	// After the procedure
 	// disable the Sleep Mode
 	sleep_disable();
-        
-	// Return the ADC 10-bit word 
-        return ADC;
+}
+
+uint8_t _qk_adc_done()
+{
+	if( qk_adc_flags() & QK_ADC_FLAG_DONE )
+	{ 
+		qk_adc_flag_clear(QK_ADC_FLAG_DONE);
+		return 1;
+	}
+	else	return 0;
+}
+
+inline uint16_t _qk_adc_read()
+{
+	// Read ADC register
+	return ADC;
 }
 
