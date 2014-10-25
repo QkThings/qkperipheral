@@ -30,6 +30,12 @@ void _qk_mcu_startup(void)
 	CMU_ClockEnable(cmuClock_HFPER, true);
 }
 
+void _qk_mcu_finalize(void)
+{
+
+}
+
+
 void qk_mcu_interrupt_enable(void)
 {
 	INT_Enable();
