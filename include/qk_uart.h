@@ -61,7 +61,7 @@ void qk_uart_write(qk_uart id, uint8_t *buf, uint16_t count);
 /**
  * @brief .
  */
-uint16_t qk_uart_bytes_available(qk_uart id);
+int qk_uart_bytes_available(qk_uart id);
 
 /**
  * @brief .
@@ -71,7 +71,7 @@ int qk_uart_peek(qk_uart id, uint8_t *buf, int count);
 /**
  * @brief .
  */
-uint16_t qk_uart_read(qk_uart id, uint8_t *buf, uint16_t count);
+int qk_uart_read(qk_uart id, uint8_t *buf, uint16_t count);
 
 
 uint32_t qk_uart_flags(qk_uart id);

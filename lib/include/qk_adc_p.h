@@ -31,10 +31,7 @@ extern _qk_adc_struct _qk_adc;
 void _qk_adc_startup();
 void _qk_adc_init();
 
-void _qk_adc_setup(qk_adc_ch ch);
-void _qk_adc_start();
-uint8_t _qk_adc_done();
-uint16_t _qk_adc_read();
+void _qk_adc_handle_sampling_done();
 
 
 #endif

@@ -28,34 +28,23 @@
 typedef uint32_t qk_adc_ch;
 
 typedef enum{
-	QK_ADC_FLAG_INTERRUPT = (1<<0),
 	QK_ADC_FLAG_DONE = (1<<1)
 } qk_adc_flag;
 
 /**
  * @brief .
  */
-uint16_t qk_adc_read(qk_adc_ch ch);
+uint32_t qk_adc_read(qk_adc_ch ch);
 
 /**
  * @brief .
  */
-uint8_t qk_adc_flags();
+uint8_t qk_adc_flags(void);
 
 /**
  * @brief .
  */
-void qk_adc_flags_clear();
-
-/**
- * @brief .
- */
-void qk_adc_flag_clear(uint8_t flag);
-
-/**
- * @brief .
- */
-void qk_adc_flag_set(uint8_t flag);
+void qk_adc_flags_clear(uint32_t flags);
 
 #endif
 
