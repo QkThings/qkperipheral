@@ -32,29 +32,12 @@ uint8_t qk_adc_flags()
 	return _qk_adc.flags;
 }
 
-void qk_adc_flags_clear()
-{
-	_qk_adc.flags = 0;
-}
-
-void qk_adc_flag_clear(qk_adc_flag flag)
+void qk_adc_flags_clear(uint32_t flags)
 {	
-	_qk_adc.flags &= ~flag;
+	_qk_adc.flags &= ~flags;
 }
 
-void qk_adc_flag_set(qk_adc_flag flag)
+void _qk_adc_handle_sampling_done()
 {
-	_qk_adc.flags |= flag;
-}
-
-uint16_t qk_adc_read(qk_adc_ch ch)
-{
-	// Setup the ADC
-	_qk_adc_setup(ch);
-	// Start conversion
-	_qk_adc_start();
-	// Wait for the ADC
-	while(!_qk_adc_done());
-	// Return the ADC result
-	return _qk_adc_read();
+	_qk_adc.flags |= QK_ADC_FLAG_DONE;
 }
