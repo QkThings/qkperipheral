@@ -33,8 +33,6 @@ void _qk_adc_init();
 
 void _qk_adc_handle_sampling_done();
 
-void _qk_adc_setup(qk_adc_ch ch);
-
 
 #endif
 
