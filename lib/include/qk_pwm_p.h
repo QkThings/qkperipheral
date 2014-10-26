@@ -17,30 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qk_peripheral.h"
-#include "qk_peripheral_p.h"
+#ifndef QK_PWM_P_H
+#define QK_PWM_P_H
 
-qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
-
-void _qk_peripheral_setup(void)
+typedef struct
 {
-	_qk_mcu_startup();
-	_qk_gpio_startup();
-	_qk_uart_startup();
-	_qk_pwm_startup();	
-	_qk_timer_startup();
-	_qk_adc_startup();
-	//_qk_pwm_startup();
+	uint8_t flags;
+} _qk_pwm_struct;
 
-	_qk_gpio_init();
-	_qk_uart_init();
-	_qk_timer_init();
-	_qk_adc_init();
 
-	_qk_mcu_finalize();
-}
+extern _qk_pwm_struct _qk_pwm;
 
-void _qk_peripheral_update(int clk_freq)
-{
-	_qk_peripheral.clk_freq = clk_freq;
-}
+void _qk_pwm_startup();
+void _qk_pwm_init();
+
+void _qk_pwm_setup(qk_pwm_ch ch);
+void _qk_pwm_start();
+void qk_pwm_start();
+uint8_t _qk_pwm_done();
+uint16_t _qk_pwm_read();
+
+
+#endif
+
