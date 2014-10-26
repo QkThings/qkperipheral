@@ -44,7 +44,7 @@ uint8_t qk_adc_flags(void);
 /**
  * @brief .
  */
-void qk_adc_flag_clear(uint32_t flags);
+void qk_adc_flags_clear(uint32_t flags);
 
 #endif
 
