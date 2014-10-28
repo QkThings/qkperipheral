@@ -20,56 +20,51 @@
 #include "qk_peripheral.h"
 #include "qk_peripheral_p.h"
 
-#define F_CPU 1000000UL
 #include <avr/io.h>
-#include <avr/delay.h>
-#include <avr/interrupt.h>
+
+#define QK_PWM_CLK_DEFAULT ((1<<CS22) | (1<<CS20)) 
+#define QK_PWM_DC_DEFAULT 128	
 
 void _qk_pwm_startup()
 {
-    // initialize timer0 in PWM mode
-    TCCR2A  |= (1<<WGM20)|(1<<COM2A1)|(1<<WGM21);
-    TCCR2B  |= (1<<CS22) | (1<<CS20) ;//| (1<<CS21);
-  
-    // make sure to make OC0 pin (pin PB3 for atmega32) as output pin
-    DDRB |= 0xFF;
+	// Ensure the Timer2 is clocked from 
+	// the 32kHz Crystal Ooscillator
+	ASSR &=  ~(1<<EXCLK);
+	ASSR |=   (1<<AS2);
+		
+	// Initialize Timer2 in Fast PWM mode	
+	TCCR2A  |= (1<<WGM20) | (1<<COM2A1) | (1<<WGM21);
+	
+	// Wait until the TCCR2A updates
+	while(ASSR & (1<<TCR2AUB));
+	
+	// Set PWM default duty cycle
+	qk_pwm_set_duty_cycle(QK_PWM_DC_DEFAULT);
 
-//	qk_pwm_start();
 }
   
+   
 void qk_pwm_start()
 {
-    static uint8_t brightness = 0;
-  
-
-	_qk_pwm_startup();
-  
-    // run forever
-//    while(1)
-  //  {
-        // increasing brightness
-       // for (brightness = 0; brightness < 255; ++brightness)
-       // {
-            // set the brightness as duty cycle
-            OCR2A = brightness;
-	brightness +=1;  
-            // delay so as to make the user "see" the change in brightness
-         //   _delay_ms(10);
-        //}
-  
-        // decreasing brightness
- /*       for (brightness = 255; brightness > 0; --brightness)
-        {
-            // set the brightness as duty cycle
-            OCR2A = brightness;
-  
-            // delay so as to make the user "see" the change in brightness
-            _delay_ms(10);
-        }
- */ 
-    // repeat this forever
- //   }
+	// Enable PWM default clock
+	TCCR2B  |= QK_PWM_CLK_DEFAULT;
+	// Wait until the TCCR2B updates
+	while(ASSR & (1<<TCR2BUB));
 }
 
-
+void qk_pwm_stop()
+{	
+	// Disable PWM default clock
+	TCCR2B  &= ~QK_PWM_CLK_DEFAULT;
+	// Wait until the TCCR2B updates
+	while(ASSR & (1<<TCR2BUB));
+}
+ 
+void qk_pwm_set_duty_cycle(uint8_t duty_cycle)
+{	
+	// Write duty cycle value to OCR
+	OCR2A = duty_cycle;
+	// Wait until the register updates
+	while(ASSR & (1<<OCR2AUB));
+}
 

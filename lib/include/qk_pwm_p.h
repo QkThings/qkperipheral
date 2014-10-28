@@ -20,23 +20,7 @@
 #ifndef QK_PWM_P_H
 #define QK_PWM_P_H
 
-typedef struct
-{
-	uint8_t flags;
-} _qk_pwm_struct;
-
-
-extern _qk_pwm_struct _qk_pwm;
-
 void _qk_pwm_startup();
-void _qk_pwm_init();
-
-void _qk_pwm_setup(qk_pwm_ch ch);
-void _qk_pwm_start();
-void qk_pwm_start();
-uint8_t _qk_pwm_done();
-uint16_t _qk_pwm_read();
-
 
 #endif
 
