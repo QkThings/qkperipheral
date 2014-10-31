@@ -17,36 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** \addtogroup QkADC
- * @brief Analog-to-Digital Coverter (ADC)
- *  @{
- */
+#ifndef QK_PWM_P_H
+#define QK_PWM_P_H
 
-#ifndef QK_ADC_H
-#define QK_ADC_H
-
-typedef uint32_t qk_adc_ch;
-
-typedef enum{
-	QK_ADC_FLAG_DONE = (1<<1)
-} qk_adc_flag;
-
-/**
- * @brief .
- */
-uint32_t qk_adc_read(qk_adc_ch ch);
-
-/**
- * @brief .
- */
-uint8_t qk_adc_flags(void);
-
-/**
- * @brief .
- */
-void qk_adc_flags_clear(uint32_t flags);
+void _qk_pwm_startup();
 
 #endif
-
-/** @}*/
 
