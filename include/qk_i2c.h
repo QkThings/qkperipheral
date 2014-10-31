@@ -17,30 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qk_peripheral.h"
-#include "qk_peripheral_p.h"
+/** \addtogroup QkI2C
+ * @brief Analog-to-Digital Coverter (I2C)
+ *  @{
+ */
 
-qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
+#ifndef QK_I2C_H
+#define QK_I2C_H
 
-void _qk_peripheral_setup(void)
-{
-	_qk_mcu_startup();
-	_qk_gpio_startup();
-	_qk_uart_startup();
-	_qk_timer_startup();
-	_qk_adc_startup();
-	_qk_pwm_startup();
-	_qk_i2c_startup();
 
-	_qk_gpio_init();
-	_qk_uart_init();
-	_qk_timer_init();
-	_qk_adc_init();
+typedef enum{
+	QK_I2C_OK,
+	QK_I2C_ERROR,
+	QK_I2C_ERROR_START
+} qk_i2c_status;
 
-	_qk_mcu_finalize();
-}
+/**
+ * @brief .
+ */
+uint8_t qk_i2c_start();
 
-void _qk_peripheral_update(int clk_freq)
-{
-	_qk_peripheral.clk_freq = clk_freq;
-}
+/**
+ * @brief .
+ */
+uint8_t qk_i2c_write(uint8_t * data, uint8_t num_bytes);
+
+/**
+ * @brief .
+ */
+uint8_t qk_i2c_read(uint8_t * data, uint8_t num_bytes, bool ack);
+
+/**
+ * @brief .
+ */
+uint8_t qk_i2c_stop();
+
+#endif
+/** @}*/
