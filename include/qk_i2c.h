@@ -28,8 +28,9 @@
 
 typedef enum{
 	QK_I2C_OK,
-	QK_I2C_ERROR,
-	QK_I2C_ERROR_START
+	QK_I2C_ERR,
+	QK_I2C_OK_ACK,
+	QK_I2C_OK_NACK
 } qk_i2c_status;
 
 /**

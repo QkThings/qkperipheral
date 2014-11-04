@@ -39,6 +39,12 @@
 
 void _qk_i2c_startup()
 {
+	// Set clkdiv=0
+	TWSR = 0x00;
+	// Set bitrate max bitrate to 400kHz
+	TWBR = 0x02;
+	// Enable I2C I/O pins
+	TWCR = (1<<TWEN);
 }
 
 uint8_t _qk_i2c_status()
@@ -57,10 +63,10 @@ uint8_t qk_i2c_start()
 	switch( _qk_i2c_status())
 	{ 	
 		// Expected status list
-		case START_ACK: return QK_I2C_OK;
-		case REP_START_ACK: return QK_I2C_OK;
+		case START_ACK:      return QK_I2C_OK_ACK;
+		case REP_START_ACK:  return QK_I2C_OK_ACK;
 		// Erroneous status 
-		default: return QK_I2C_ERROR;
+		default: return QK_I2C_ERR;
 	}
 }
 
@@ -68,25 +74,27 @@ uint8_t qk_i2c_start()
 uint8_t qk_i2c_write(uint8_t * data, uint8_t num_bytes)
 {	
 	uint8_t i;
+	qk_i2c_status status;
+
 	for(i=0;i<num_bytes;i++)
-	{	// Load Slave Addr + Write/Read bit 
+	{	// Load data byte 
 		TWDR = data[i];
 
 		// Start transmission
 		TWCR = (1<<TWINT) | (1<<TWEN);
 
 		// Wait for transmission
-		while(!(TWCR & (1<<TWINT)));
+		while((TWCR & (1<<TWINT))==0);
 		
 		// Break if some error has occured 
 		switch(_qk_i2c_status())
 		{ 	
 			// Expected status list
-			case MT_SLA_ACK: break;
-			case MT_DATA_ACK: break;
-			case MR_SLA_ACK: break;
+			case MT_SLA_ACK:  status = QK_I2C_OK_ACK; break;
+			case MT_DATA_ACK: status = QK_I2C_OK_ACK; break;
+			case MR_SLA_ACK:  status = QK_I2C_OK_ACK; break;
 			// Erroneous status 
-			default: return QK_I2C_ERROR;
+			default: return QK_I2C_ERR;
 		}
 	}
 	return QK_I2C_OK;
@@ -95,7 +103,8 @@ uint8_t qk_i2c_write(uint8_t * data, uint8_t num_bytes)
 uint8_t qk_i2c_read(uint8_t * data, uint8_t num_bytes, bool ack)
 {
 	uint8_t i;
-		
+	qk_i2c_status status;
+	
 	for(i=0;i<num_bytes;i++)	
 	{
 		// Begin transmission 
@@ -109,14 +118,14 @@ uint8_t qk_i2c_read(uint8_t * data, uint8_t num_bytes, bool ack)
 		switch(_qk_i2c_status())
 		{ 	
 			// Expected status list
-			case MR_DATA_ACK: break;
-			case MR_DATA_NACK: break;
+			case MR_DATA_ACK:  status = QK_I2C_OK_ACK;  break;
+			case MR_DATA_NACK: status = QK_I2C_OK_NACK; break;
 			// Erroneous status 
-			default: return QK_I2C_ERROR;
+			default: return QK_I2C_ERR;
 		}
 	}
 
-	return QK_I2C_OK;
+	return status;
 }
 
 uint8_t qk_i2c_stop()
@@ -124,8 +133,8 @@ uint8_t qk_i2c_stop()
 	//Send stop
 	TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWSTO) ;
 
-	// Wait for TWINT flag set in TWCR Register
-	while (!(TWCR & (1 << TWINT)));
+	// Wait for TWSTO flag to be cleared 
+	while (!(TWCR & (1 << TWSTO)));
 
 	return QK_I2C_OK;
 }
