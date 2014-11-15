@@ -31,7 +31,8 @@ void _qk_peripheral_setup(void)
 	_qk_adc_startup();
 	_qk_pwm_startup();
 	_qk_i2c_startup();
-
+	_qk_spi_startup();
+	
 	_qk_gpio_init();
 	_qk_uart_init();
 	_qk_timer_init();

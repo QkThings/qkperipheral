@@ -41,6 +41,7 @@ Configuring microcontroller's peripherals through registers is always a time con
 #include "qk_timer.h"
 #include "qk_adc.h"
 #include "qk_i2c.h"
+#include "qk_spi.h"
 
 void _qk_peripheral_setup(void);
 void _qk_peripheral_update(int clock_freq);
