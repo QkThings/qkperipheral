@@ -22,6 +22,10 @@
  *  @{
  */
 
+#ifndef QK_SPI_H
+#define QK_SPI_H
+
+
 typedef uint32_t qk_spi;
 
 /**
@@ -59,7 +63,7 @@ typedef enum
 /**
  * @brief .
  */
-void qk_spi_set_mode(qk_spi spi, qk_spi_mode mode);
+void qk_spi_set_mode(qk_spi_mode mode);
 
 /**
  * @brief .
@@ -70,6 +74,12 @@ void qk_spi_set_bitmode(qk_spi spi, qk_spi_bitmode bitmode);
  * @brief .
  */
 void qk_spi_set_speed(qk_spi spi, qk_spi_speed speed);
+
+/**
+ * @brief .
+ */
+uint8_t qk_spi_transfer(uint8_t data);
+
 
 #endif
 
