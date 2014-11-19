@@ -41,12 +41,20 @@ uint8_t qk_i2c_start();
 /**
  * @brief .
  */
-uint8_t qk_i2c_write(uint8_t * data, uint8_t num_bytes);
+
+uint32_t qk_i2c_write(uint8_t addr, uint8_t reg_addr, uint8_t value);
+
+//uint8_t qk_i2c_write(uint8_t * data, uint8_t num_bytes);
 
 /**
  * @brief .
  */
-uint8_t qk_i2c_read(uint8_t * data, uint8_t num_bytes, bool ack);
+
+uint8_t qk_i2c_read(uint8_t addr, uint8_t reg_addr);
+
+//uint8_t qk_i2c_read(uint8_t * data, uint8_t num_bytes, bool ack);
+
+
 
 /**
  * @brief .

@@ -21,8 +21,48 @@
 #include "qk_peripheral_p.h"
 
 #include "em_adc.h"
+#include "em_cmu.h"
 
-int qk_adc_read(qk_adc_ch ch)
+void _qk_adc_startup()
 {
-	return 0;
+	// default settings
+	CMU_ClockEnable(cmuClock_ADC0, true);
+
+	ADC_Init_TypeDef init = ADC_INIT_DEFAULT;
+//	ADC_InitSingle_TypeDef singleInit = ADC_INITSINGLE_DEFAULT;
+
+	init.timebase = ADC_TimebaseCalc(0);
+
+	init.prescale = ADC_PrescaleCalc(7000000,0);
+
+	ADC_Init(ADC0,&init);
+
+}
+
+uint32_t qk_adc_read(qk_adc_ch ch)
+{
+	ADC_InitSingle_TypeDef singleInit = ADC_INITSINGLE_DEFAULT;
+
+	singleInit.reference 	= adcRefVDD;
+
+	singleInit.input   		= (ch);
+	singleInit.resolution	= adcRes12Bit; //4096 possible values between 0 and adcRefVDD
+
+	singleInit.acqTime 		= adcAcqTime32;
+
+	ADC_InitSingle(ADC0,&singleInit);
+
+	ADC_Start(ADC0,adcStartSingle);
+
+	//TODO: use interrupts instead of pin polling
+	while(ADC0->STATUS & ADC_STATUS_SINGLEACT) {
+		//TODO: go to sleep mode (EM2?)
+	}
+
+	return ADC_DataSingleGet(ADC0);
+}
+//TODO: allow parameters setup ?
+void qk_adc_setup() {
+	// change ADC_Init_TypeDef and ADC_InitSingle_TypeDef
+
 }
