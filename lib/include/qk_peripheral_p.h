@@ -32,6 +32,7 @@
 #include "qk_timer_p.h"
 #include "qk_adc_p.h"
 #include "qk_pwm_p.h"
+#include "qk_i2c_p.h"
 
 #ifndef INIT_CLKFREQ
 #error "INIT_CLKFREQ is not defined"
