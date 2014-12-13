@@ -17,31 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qk_peripheral.h"
-#include "qk_peripheral_p.h"
+/** \addtogroup QkPWM
+ * @brief Pulse-Width Modulation (PWM)
+ *  @{
+ */
 
-qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
+#ifndef QK_PWM_H
+#define QK_PWM_H
 
-void _qk_peripheral_setup(void)
-{
-	_qk_mcu_startup();
-	_qk_gpio_startup();
-	_qk_uart_startup();
-	_qk_timer_startup();
-	_qk_adc_startup();
-	_qk_pwm_startup();
-	_qk_i2c_startup();
-	_qk_spi_startup();
-	
-	_qk_gpio_init();
-	_qk_uart_init();
-	_qk_timer_init();
-	_qk_adc_init();
+/**
+ * @brief .
+ */
+void qk_pwm_start();
 
-	_qk_mcu_finalize();
-}
+/**
+ * @brief .
+ */
+void qk_pwm_stop()
 
-void _qk_peripheral_update(int clk_freq)
-{
-	_qk_peripheral.clk_freq = clk_freq;
-}
+/**
+ * @brief .
+ */
+ 
+void qk_pwm_set_duty_cycle(uint8_t duty_cycle);
+
+#endif
+
+/** @}*/
+

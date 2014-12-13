@@ -2,6 +2,7 @@ doc/html
 build/bin
 build/output
 build/lib
+*.orig
 *.*~
 *~
 *.a
