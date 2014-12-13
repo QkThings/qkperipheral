@@ -67,6 +67,11 @@ typedef enum
 	QK_GPIO_FLAG_RISE = (1<<1)
 } qk_gpio_flag;
 
+typedef enum
+{
+	LOW = 0,
+	HIGH = 1
+} qk_gpio_state;
 
 #define QK_GPIO_PIN(portletter,bit)	(((QK_GPIO_PORT_ ## portletter)<<16)+((bit)&0xFFFF))
 

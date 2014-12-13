@@ -20,12 +20,12 @@
 #ifndef QK_UART_P_H
 #define QK_UART_P_H
 
-#ifndef QK_UART_COUNT
-#error "QK_UART_COUNT not defined"
+#ifndef QK_UART_RX_BUFSIZE
+#define QK_UART_RX_BUFSIZE 64
 #endif
 
-#ifndef QK_UART_RX_BUFSIZE
-#define QK_UART_RX_BUFSIZE 16
+#ifndef QK_UART_COUNT
+#error "QK_UART_COUNT not defined"
 #endif
 
 typedef volatile struct

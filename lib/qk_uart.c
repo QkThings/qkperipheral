@@ -32,30 +32,6 @@ int qk_uart_bytes_available(qk_uart id)
 	return _qk_uart[id].count;
 }
 
-int qk_uart_peek(qk_uart id, uint8_t *buf, int count)
-{
-	unsigned int i;
-	uint16_t bytes_to_read = count;
-
-	qk_mcu_interrupt_disable();
-
-	int i_rd = _qk_uart[id].i_rd;
-	uint16_t bytes_available = _qk_uart[id].count;
-
-	if(bytes_to_read > bytes_available)
-		bytes_to_read = bytes_available;
-
-	for(i = 0; i < bytes_to_read; i++)
-	{
-		buf[i] = _qk_uart[id].rx_buf[i_rd];
-		i_rd = (i_rd + 1) % QK_UART_RX_BUFSIZE;
-	}
-
-	qk_mcu_interrupt_enable();
-
-	return bytes_to_read;
-}
-
 int qk_uart_read(qk_uart id, uint8_t *buf, uint16_t count)
 {
 	unsigned int i;
@@ -89,12 +65,13 @@ void _qk_uart_handle_rx(qk_uart id, uint8_t data)
 	qk_uart_write(id, &data, 1);
 #endif
 
-	i_wr = uart_struct->i_wr;
-	uart_struct->rx_buf[i_wr] = data;
-	uart_struct->i_wr = (i_wr + 1) % QK_UART_RX_BUFSIZE;
-
 	if(uart_struct->count < QK_UART_RX_BUFSIZE)
+	{
+		i_wr = uart_struct->i_wr;
+		uart_struct->rx_buf[i_wr] = data;
+		uart_struct->i_wr = (i_wr + 1) % QK_UART_RX_BUFSIZE;
 		uart_struct->count++;
+	}
 	else
 		uart_struct->flags |= QK_UART_FLAG_OVERFLOW;
 }

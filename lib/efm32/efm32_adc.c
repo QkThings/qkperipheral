@@ -22,7 +22,12 @@
 
 #include "em_adc.h"
 
-int qk_adc_read(qk_adc_ch ch)
+void _qk_adc_startup(void)
+{
+
+}
+
+uint32_t qk_adc_read(qk_adc_ch ch)
 {
 	return 0;
 }

@@ -49,14 +49,16 @@ typedef enum UART_Type
 #define EFM32_LEUART_IRQ(name, id) \
 	void name ## _IRQHandler() \
 	{ \
-		_qk_uart_handle_rx(EFM32_USART_HIGHEST+1+ id , LEUART_Rx( name )); \
+		_qk_uart_handle_rx( id , LEUART_Rx( name )); \
 		LEUART_IntClear( name , LEUART_IF_RXDATAV); \
 	}
 
 
 EFM32_USART_IRQ( USART0, _QK_PROGRAM_UART)
-//EFM32_USART_IRQ( USART1, QK_UART_0)
-//EFM32_LEUART_IRQ(LEUART0, QK_UART_1)
+
+EFM32_USART_IRQ( USART1, QK_UART_0)
+
+EFM32_LEUART_IRQ(LEUART0, QK_UART_1)
 
 static uint32_t calculateBaudRateClkDiv(uint32_t baud, uint32_t ovs)
 {
@@ -124,60 +126,74 @@ static UART_Type get_uart_type(qk_uart uart)
 	return UART_TYPE_UNKNOWN;
 }
 
+//----------------------------------------------------------------------------
+
 void _qk_uart_startup()
 {
-	GPIO_PinModeSet(gpioPortE, 10, gpioModePushPull, 1);
-	GPIO_PinModeSet(gpioPortE, 11, gpioModeInput, 0);
-//
-//
-//	  CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART0;
-//
-//	  init(USART0, 0);
-//	  setBaudRate(USART0, 38400);
-//	  enable(USART0);
-//
-//	  NVIC_ClearPendingIRQ(USART0_RX_IRQn);
-//	  NVIC_EnableIRQ(USART0_RX_IRQn);
-//	  USART0->IEN |= USART_IF_RXDATAV;
-
-	CMU_ClockEnable(cmuClock_USART0, true);
-
-	USART_InitAsync_TypeDef usartInitAsync = USART_INITASYNC_DEFAULT;
-	usartInitAsync.baudrate = 38400;
-	usartInitAsync.oversampling = usartOVS4;
-	usartInitAsync.mvdis = true;
-
-	USART_InitAsync(USART0, &usartInitAsync);
-	USART0->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX;
-	USART0->ROUTE = USART_ROUTE_RXPEN | USART_ROUTE_TXPEN | USART_ROUTE_LOCATION_LOC0;
 	NVIC_ClearPendingIRQ(USART0_RX_IRQn);
 	NVIC_EnableIRQ(USART0_RX_IRQn);
 	USART_IntEnable(USART0, USART_IF_RXDATAV);
 
+	NVIC_ClearPendingIRQ(LEUART0_IRQn);
+	NVIC_EnableIRQ(LEUART0_IRQn);
+	LEUART_IntEnable(LEUART0, LEUART_IF_RXDATAV);
 
-////	CMU_ClockEnable(cmuClock_USART1, true);
-////	CMU_ClockEnable(cmuClock_LEUART0, true);
-//
-//	USART_InitAsync_TypeDef usartInitAsync = USART_INITASYNC_DEFAULT;
-//	usartInitAsync.baudrate = 38400;
-////	LEUART_Init_TypeDef leuartInit = LEUART_INIT_DEFAULT;
-//
-//	USART_InitAsync(USART0, &usartInitAsync);
-//	USART_IntEnable(USART0, USART_IF_RXDATAV);
-//	NVIC_ClearPendingIRQ(USART0_RX_IRQn);
-//	NVIC_EnableIRQ(USART0_RX_IRQn);
-
-//	USART_InitAsync(USART1, &usartInitAsync);
-//	NVIC_ClearPendingIRQ(USART1_RX_IRQn);
-//	NVIC_EnableIRQ(USART1_RX_IRQn);
-//	USART1->IEN |= USART_IF_RXDATAV;
-//
-//	LEUART_Init(LEUART0, &leuartInit);
-
-//	NVIC_ClearPendingIRQ(LEUART0_IRQn);
-//	NVIC_EnableIRQ(LEUART0_IRQn);
-//	LEUART_IntEnable(LEUART0, LEUART_IF_RXDATAV);
+	qk_uart_enable(_QK_PROGRAM_UART);
 }
+
+
+void qk_uart_enable(qk_uart id)
+{
+	switch(id)
+	{
+	case _QK_PROGRAM_UART:
+		GPIO_PinModeSet(gpioPortE, 10, gpioModePushPull, 1);
+		GPIO_PinModeSet(gpioPortE, 11, gpioModeInput, 0);
+		CMU_ClockEnable(cmuClock_USART0, true);
+		break;
+	case QK_UART_1:
+		CMU_ClockEnable(cmuClock_CORELE, true);
+		CMU_ClockEnable(cmuClock_LEUART0, true);
+		CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_CORELEDIV2);
+		CMU->LFBPRESC0 = CMU_LFBPRESC0_LEUART0_DIV2;
+
+		GPIO_PinModeSet(gpioPortD, 4, gpioModePushPull, 1);
+		GPIO_PinModeSet(gpioPortD, 5, gpioModeInputPull, 1);
+		break;
+	}
+
+	if(get_uart_type(id) == UART_TYPE_USART)
+	{
+		USART_TypeDef *usart = get_usart_typedef(id);
+
+		USART_InitAsync_TypeDef usartInitAsync = USART_INITASYNC_DEFAULT;
+		usartInitAsync.baudrate = 38400;
+		usartInitAsync.oversampling = usartOVS4;
+		usartInitAsync.mvdis = true;
+		USART_InitAsync(usart, &usartInitAsync);
+		usart->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX;
+		usart->ROUTE = USART_ROUTE_RXPEN | USART_ROUTE_TXPEN | USART_ROUTE_LOCATION_LOC0;
+		USART_IntEnable(usart, USART_IF_RXDATAV);
+	}
+	else
+	{
+		LEUART_TypeDef *leuart = get_leuart_typedef(id);
+
+		LEUART_Init_TypeDef leuartInit = LEUART_INIT_DEFAULT;
+		LEUART_Reset(leuart);
+		leuartInit.baudrate = 38400;
+		LEUART_Init(leuart, &leuartInit);
+		leuart->CMD = LEUART_CMD_CLEARRX | LEUART_CMD_CLEARTX;
+		leuart->ROUTE = LEUART_ROUTE_TXPEN | LEUART_ROUTE_RXPEN | LEUART_ROUTE_LOCATION_LOC0;
+		LEUART_IntEnable(leuart, LEUART_IF_RXDATAV);
+	}
+}
+
+void qk_uart_disable(qk_uart id)
+{
+
+}
+
 
 void qk_uart_set_baudrate(qk_uart id, uint32_t baud)
 {
@@ -193,22 +209,6 @@ void qk_uart_set_baudrate(qk_uart id, uint32_t baud)
 	{
 		LEUART_TypeDef *leuart = get_leuart_typedef(id);
 		LEUART_BaudrateSet(leuart, 0, baud);
-	}
-}
-
-void qk_uart_enable(qk_uart id, bool enable)
-{
-	if(get_uart_type(id) == UART_TYPE_USART)
-	{
-		USART_TypeDef *usart = get_usart_typedef(id);
-		USART_Enable_TypeDef usart_en = (enable ? usartEnable : usartDisable);
-		USART_Enable(usart, usart_en);
-	}
-	else
-	{
-		LEUART_TypeDef *leuart = get_leuart_typedef(id);
-		LEUART_Enable_TypeDef leauart_en = (enable ? leuartEnable : leuartDisable);
-		LEUART_Enable(leuart, leauart_en);
 	}
 }
 
@@ -229,7 +229,24 @@ void qk_uart_write(qk_uart id, uint8_t *buf, uint16_t count)
 	{
 		LEUART_TypeDef *leuart = get_leuart_typedef(id);
 		while(count--)
-			LEUART_Tx(leuart, *p_buf++);
+		{
+			/* LF register about to be modified require sync. busy check */
+//			LEUART_Sync(leuart, LEUART_SYNCBUSY_TXDATA);
+			  if (leuart->FREEZE & LEUART_FREEZE_REGFREEZE)
+			  {
+			    return;
+			  }
+
+			  /* Wait for any pending previous write operation to have been completed */
+			  /* in low frequency domain */
+			  while (leuart->SYNCBUSY & LEUART_SYNCBUSY_TXDATA)
+			    ;
+
+			leuart->TXDATA = (uint32_t)*p_buf++;
+			/* Check that transmit buffer is empty */
+			while (!(leuart->STATUS & LEUART_STATUS_TXBL));
+//			LEUART_Tx(leuart, *p_buf++);
+		}
 	}
 }
 

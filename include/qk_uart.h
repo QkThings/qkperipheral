@@ -46,12 +46,17 @@ typedef enum
 /**
  * @brief .
  */
-void qk_uart_set_baudrate(qk_uart id, uint32_t baud);
+void qk_uart_enable(qk_uart id);
 
 /**
  * @brief .
  */
-void qk_uart_enable(qk_uart id, bool enable);
+void qk_uart_disable(qk_uart id);
+
+/**
+ * @brief .
+ */
+void qk_uart_set_baudrate(qk_uart id, uint32_t baud);
 
 /**
  * @brief .
@@ -62,11 +67,6 @@ void qk_uart_write(qk_uart id, uint8_t *buf, uint16_t count);
  * @brief .
  */
 int qk_uart_bytes_available(qk_uart id);
-
-/**
- * @brief .
- */
-int qk_uart_peek(qk_uart id, uint8_t *buf, int count);
 
 /**
  * @brief .
