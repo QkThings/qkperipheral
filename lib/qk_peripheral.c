@@ -25,18 +25,38 @@ qk_peripheral _qk_peripheral = QKPERIPHERAL_INIT;
 void _qk_peripheral_setup(void)
 {
 	_qk_mcu_startup();
+
+#ifdef QK_GPIO
 	_qk_gpio_startup();
-	_qk_uart_startup();
-	_qk_timer_startup();
-	_qk_adc_startup();
-	_qk_pwm_startup();
-	_qk_i2c_startup();
-	_qk_spi_startup();
-	
 	_qk_gpio_init();
+#endif
+
+#ifdef QK_UART
+	_qk_uart_startup();
 	_qk_uart_init();
+#endif
+
+#ifdef QK_TIMER
+	_qk_timer_startup();
 	_qk_timer_init();
+#endif 
+
+#ifdef QK_ADC
+	_qk_adc_startup();
 	_qk_adc_init();
+#endif
+
+#ifdef QK_PWM
+	_qk_pwm_startup();
+#endif
+
+#ifdef QK_I2C
+	_qk_i2c_startup();
+#endif
+
+#ifdef QK_SPI
+	_qk_spi_startup();
+#endif
 
 	_qk_mcu_finalize();
 }
