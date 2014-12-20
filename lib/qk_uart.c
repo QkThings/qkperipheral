@@ -22,6 +22,10 @@
 
 _qk_uart_struct _qk_uart[QK_UART_COUNT];
 
+#if QK_UART_COUNT == 0
+#error QK_UART_COUNT cannot be 0
+#endif
+
 void _qk_uart_init(void)
 {
 	memset((void*) _qk_uart, 0, QK_UART_COUNT*sizeof(_qk_uart_struct));
