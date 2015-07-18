@@ -9,12 +9,12 @@ QKPERIPHERAL_DIR = qkperipheral
 # SOURCE                   
 ####################################################################
 
-INCLUDE_DIR += \
+INCLUDE_DIRS += \
 $(QKPERIPHERAL_DIR)/include \
-$(QKPERIPHERAL_DIR)/lib/include
+$(QKPERIPHERAL_DIR)/src/include
 
-C_SRC_DIR += \
-$(QKPERIPHERAL_DIR)/lib
+C_SRC_DIRS += \
+$(QKPERIPHERAL_DIR)/src
 
 s_SRC += 
 S_SRC += 
@@ -24,9 +24,9 @@ S_SRC +=
 # TARGET
 ####################################################################
 
-include $(TARGET_GLOBAL)
-include $(QKPERIPHERAL_DIR)/build/target/$(TARGET_NAME)/board/$(TARGET_VARIANT).mk
-include $(QKPERIPHERAL_DIR)/build/target/$(TARGET_NAME)/$(TARGET_NAME).mk
+#include $(TARGET_GLOBAL)
+include $(QKPERIPHERAL_DIR)/target/$(TARGET_CPU)/board/$(TARGET_BOARD).mk
+include $(QKPERIPHERAL_DIR)/target/$(TARGET_CPU)/$(TARGET_CPU).mk
 
 
 

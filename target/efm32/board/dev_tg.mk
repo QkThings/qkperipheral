@@ -2,4 +2,4 @@
 # qkthings
 ###############################################################################
 
-include qkperipheral/build/target/efm32/mcu/tg.mk
+include qkperipheral/target/efm32/mcu/tg.mk
