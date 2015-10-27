@@ -169,7 +169,7 @@ void qk_uart_enable(qk_uart id)
 		USART_InitAsync_TypeDef usartInitAsync = USART_INITASYNC_DEFAULT;
 		usartInitAsync.baudrate = 38400;
 		usartInitAsync.oversampling = usartOVS4;
-		usartInitAsync.mvdis = true;
+		//usartInitAsync.mvdis = true;
 		USART_InitAsync(usart, &usartInitAsync);
 		usart->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX;
 		usart->ROUTE = USART_ROUTE_RXPEN | USART_ROUTE_TXPEN | USART_ROUTE_LOCATION_LOC0;

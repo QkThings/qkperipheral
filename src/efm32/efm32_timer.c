@@ -191,7 +191,9 @@ void qk_timer_restart(qk_timer id)
 		get_timer_typedef(id)->CMD = TIMER_CMD_START;
 	}
 	else
-		get_letimer_typedef(id)->CNT = get_letimer_typedef(id)->COMP0;
+	{
+		//get_letimer_typedef(id)->CNT = get_letimer_typedef(id)->COMP0;
+	}
 }
 
 void delay_ms(uint16_t value)
@@ -276,7 +278,7 @@ static void letimer_set_period(LETIMER_TypeDef *timer, uint32_t per, qk_timer_sc
 		break;
 	default: ;
 	}
-	timer->CNT = 0;
+	//timer->CNT = 0;
 }
 
 static void letimer_set_frequency(LETIMER_TypeDef *timer, uint32_t freq)
