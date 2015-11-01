@@ -1,0 +1,17 @@
+doc/html
+build/bin
+build/output
+build/lib
+*.orig
+*.*~
+*~
+*.a
+*.o
+*.d
+*.bin
+*.out
+*.map
+*.zip
+*.tar.gz
+*.rar
+saved.*
