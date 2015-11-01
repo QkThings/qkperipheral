@@ -26,24 +26,15 @@
 // --------------------------------------------------------------------
 
 #include <string.h>
+#include "qk_hwdefs_p.h"
 #include "qk_mcu_p.h"
+#include "qk_clock_p.h"
 #include "qk_gpio_p.h"
 #include "qk_uart_p.h"
 #include "qk_timer_p.h"
+#include "qk_vtimer_p.h"
 #include "qk_adc_p.h"
 #include "qk_pwm_p.h"
 
-#ifndef INIT_CLKFREQ
-#error "INIT_CLKFREQ is not defined"
-#endif
-
-typedef struct qk_peripheral
-{
-	long int clk_freq;
-} qk_peripheral;
-
-#define QKPERIPHERAL_INIT { .clk_freq = INIT_CLKFREQ }
-
-extern qk_peripheral _qk_peripheral;
 
 #endif

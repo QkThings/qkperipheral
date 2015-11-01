@@ -35,16 +35,22 @@ Configuring microcontroller's peripherals through registers is always a time con
 #include <stdbool.h>
 
 #include "qk_mcu.h"
+#include "qk_clock.h"
 #include "qk_power.h"
 #include "qk_gpio.h"
 #include "qk_uart.h"
 #include "qk_timer.h"
+#include "qk_vtimer.h"
 #include "qk_adc.h"
 #include "qk_i2c.h"
 #include "qk_spi.h"
 
-void _qk_peripheral_setup(void);
-void _qk_peripheral_update(int clock_freq);
+void qk_peripheral_setup(void);
+
+#define PRINT(...) printf(__VA_ARGS__)
+
+int sprintf(char *str, const char *format, ...);
+int printf(const char *format, ...);
 
 #endif
 
